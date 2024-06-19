@@ -1,30 +1,3 @@
-# PHeatPruner
-
-`PHeatPruner` is a Python function designed to prune variables in multivariate time-series datasets using persistent homology analysis. It also offers an optional sheafification process to enhance the feature set, making it useful for dimensionality reduction while maintaining the essential structure for machine learning tasks.
-
-## Installation
-
-To use `PHeatPruner`, you need to install the following dependencies:
-
-- `numpy`
-- `pandas`
-- `tqdm`
-- `gudhi`
-- `matplotlib`
-- `scikit-learn`
-- `shap`
-- `aeon`
-
-You can install these using pip:
-
-```bash
-pip install numpy pandas tqdm gudhi matplotlib scikit-learn shap aeon
-```
-
-## Usage
-Here’s an example (also in [here](examples/UEABenchmarkExample.py)) of how to use PHeatPruner with a dataset from the UEA Archive:
-
-```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -93,11 +66,3 @@ plt.show()
 # Print the classification report for the sheafified data
 print("Classification Report (Sheafified Data):")
 print(classification_report(y_test_df, predictions_sheaf))
-```
-
-## Note
-- Persistent Homology: This technique determines the optimal epsilon threshold for pruning variables based on the topological features of the dataset.
-- Sheafification: An optional process that enhances the feature set by considering higher-order interactions among the variables.
-
-## LICENSE
-This project is licensed under the Apache License - see the [LICENSE](./LICENSE) file for details.
