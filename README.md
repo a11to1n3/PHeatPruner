@@ -133,9 +133,9 @@ homology.  In practice it complements traditional filter and wrapper methods.
   a trained model.  PHeatPruner offers a model-agnostic pre-filtering step
   suitable for both UEA Archive tasks and generic LimeSoDa applications.
 
-In our experiments on the UEA Archive as well as on internal LimeSoDa tabular
-benchmarks, we found that applying PHeatPruner before these methods reduced
-feature counts by 20–40% while maintaining or improving predictive accuracy.
+In practice, running PHeatPruner prior to these methods decreases the number of
+variables they must examine.  This often speeds up downstream feature selection
+without reducing predictive performance.
 
 ## Note
 - Persistent Homology: The pruning threshold is selected from the longest persistent feature in the data rather than relying on heuristics.
