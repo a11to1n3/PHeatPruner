@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 from tabpfn import TabPFNClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.feature_selection import RFE
+from sklearn.feature_selection import RFE, SelectFromModel
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 import shap
 
@@ -53,6 +54,14 @@ def shap_selection(X_train, y_train, X_test, top_k):
     return X_train[:, idx], X_test[:, idx]
 
 
+def l1_logreg_selection(X_train, y_train, X_test, max_feats):
+    """Select features using logistic regression with L1 penalty."""
+    model = LogisticRegression(penalty="l1", solver="liblinear", max_iter=200)
+    selector = SelectFromModel(model, max_features=max_feats)
+    selector.fit(X_train, y_train)
+    return selector.transform(X_train), selector.transform(X_test)
+
+
 def run_benchmark(dataset="ArticularyWordRecognition"):
     X_train, y_train = load_classification(dataset, split="train")
     X_test, y_test = load_classification(dataset, split="test")
@@ -88,6 +97,12 @@ def run_benchmark(dataset="ArticularyWordRecognition"):
     pred = clf.predict(shap_test)
     shap_acc = accuracy_score(y_test, pred)
 
+    # Logistic regression with L1 penalty
+    l1_train, l1_test = l1_logreg_selection(X_train_df.values, y_train, X_test_df.values, max_feats=cf_X_train.shape[1])
+    clf.fit(l1_train, y_train)
+    pred = clf.predict(l1_test)
+    l1_acc = accuracy_score(y_test, pred)
+
     # PHeatPruner
     pruned_train, pruned_test = PHeatPruner(X_train, X_test)
     clf.fit(pruned_train, y_train)
@@ -98,6 +113,7 @@ def run_benchmark(dataset="ArticularyWordRecognition"):
     print("Correlation filter accuracy:", corr_acc)
     print("RFE accuracy:", rfe_acc)
     print("SHAP accuracy:", shap_acc)
+    print("L1 logistic regression accuracy:", l1_acc)
     print("PHeatPruner accuracy:", pruner_acc)
 
 

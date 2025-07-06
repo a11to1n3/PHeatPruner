@@ -132,6 +132,13 @@ homology.  In practice it complements traditional filter and wrapper methods.
 * **SHAP-based Importance** – SHAP values explain model predictions but require
   a trained model.  PHeatPruner offers a model-agnostic pre-filtering step
   suitable for both UEA Archive tasks and generic LimeSoDa applications.
+* **L1-penalized Models** – Logistic regression with an L1 penalty or Lasso
+  regression performs embedded feature selection.  PHeatPruner can further
+  reduce the feature count before these models, simplifying the optimization.
+
+Other state-of-the-art packages such as gradient boosting frameworks or TabNet
+also provide built-in feature importance measures.  PHeatPruner acts as a
+lightweight pre-processing step that can be used ahead of these approaches.
 
 In practice, running PHeatPruner prior to these methods decreases the number of
 variables they must examine.  This often speeds up downstream feature selection
@@ -140,9 +147,10 @@ without reducing predictive performance.
 ### Benchmarking
 
 The `examples/LimeSoDaBenchmark.py` script compares PHeatPruner with
-correlation filtering, RFE, and a SHAP-based selector on a dataset loaded from
-the `limesoda` library.  It trains a `TabPFNClassifier` on the features returned
-by each method and prints their respective accuracies.
+correlation filtering, RFE, a SHAP-based selector, and a logistic-regression
+L1 selector on a dataset loaded from the `limesoda` library.  It trains a
+`TabPFNClassifier` on the features returned by each method and prints their
+respective accuracies.
 
 ```bash
 python examples/LimeSoDaBenchmark.py
