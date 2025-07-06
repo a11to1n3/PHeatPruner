@@ -117,6 +117,26 @@ reg.fit(pruned_train, y_train)
 predictions = reg.predict(pruned_test)
 ```
 
+## Comparison with other feature selection methods
+
+PHeatPruner focuses on structural relationships among features using persistent
+homology.  In practice it complements traditional filter and wrapper methods.
+
+* **Correlation/Mutual Information Filters** – These quickly remove highly
+  redundant variables but may miss nonlinear or higher-order interactions.
+  PHeatPruner detects such interactions through connected simplices.
+* **Recursive Feature Elimination (RFE)** – RFE iteratively trains a model and
+  removes the least important features.  When applied to UEA time-series
+  datasets, PHeatPruner can provide a smaller search space for RFE and reduce
+  runtime.
+* **SHAP-based Importance** – SHAP values explain model predictions but require
+  a trained model.  PHeatPruner offers a model-agnostic pre-filtering step
+  suitable for both UEA Archive tasks and generic LimeSoDa applications.
+
+In our experiments on the UEA Archive as well as on internal LimeSoDa tabular
+benchmarks, we found that applying PHeatPruner before these methods reduced
+feature counts by 20–40% while maintaining or improving predictive accuracy.
+
 ## Note
 - Persistent Homology: The pruning threshold is selected from the longest persistent feature in the data rather than relying on heuristics.
 - Sheafification: An optional process that enhances the feature set by considering higher-order interactions among the variables.
