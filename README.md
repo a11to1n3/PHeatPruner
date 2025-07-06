@@ -137,6 +137,17 @@ In practice, running PHeatPruner prior to these methods decreases the number of
 variables they must examine.  This often speeds up downstream feature selection
 without reducing predictive performance.
 
+### Benchmarking
+
+The `examples/LimeSoDaBenchmark.py` script compares PHeatPruner with
+correlation filtering, RFE, and a SHAP-based selector on a dataset loaded from
+the `limesoda` library.  It trains a `TabPFNClassifier` on the features returned
+by each method and prints their respective accuracies.
+
+```bash
+python examples/LimeSoDaBenchmark.py
+```
+
 ## Note
 - Persistent Homology: The pruning threshold is selected from the longest persistent feature in the data rather than relying on heuristics.
 - Sheafification: An optional process that enhances the feature set by considering higher-order interactions among the variables.
