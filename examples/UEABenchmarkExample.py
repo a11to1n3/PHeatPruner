@@ -1,9 +1,18 @@
+"""Example showing how to prune a UEA time-series dataset.
+
+The same ``PHeatPruner`` function can also be used for plain tabular data.
+"""
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+from tabpfn import TabPFNClassifier, TabPFNRegressor
+from sklearn.metrics import (
+    classification_report,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+)
 from aeon.datasets import load_classification
 from src.PHeatPruner import PHeatPruner
 import shap
@@ -22,8 +31,8 @@ y_test_df = pd.DataFrame(y_test)
 # Prune the dataset using PHeatPruner
 pruned_X_train, pruned_X_test = PHeatPruner(X_train, X_test)
 
-# Train a RandomForestClassifier on the pruned data
-rf_clf = RandomForestClassifier(n_estimators=100, random_state=42)
+# Train a TabPFNClassifier on the pruned data
+rf_clf = TabPFNClassifier(device="cpu")
 rf_clf.fit(pruned_X_train, y_train_df)
 predictions = rf_clf.predict(pruned_X_test)
 
@@ -66,3 +75,9 @@ plt.show()
 # Print the classification report for the sheafified data
 print("Classification Report (Sheafified Data):")
 print(classification_report(y_test_df, predictions_sheaf))
+
+# Using TabPFNRegressor for a tabular regression dataset
+# pruned_train, pruned_test = PHeatPruner(tabular_train, tabular_test)
+# regressor = TabPFNRegressor(device="cpu")
+# regressor.fit(pruned_train, y_train_reg)
+# predictions_reg = regressor.predict(pruned_test)
